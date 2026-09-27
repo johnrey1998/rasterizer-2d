@@ -6,5 +6,10 @@ namespace rasterizer {
         unsigned char g = 0;
         unsigned char b = 0;
         unsigned char a = 255;
+
+        Color() = default;
+        constexpr Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255)
+            : r(r), g(g), b(b), a(a) {}
+
     };
 }

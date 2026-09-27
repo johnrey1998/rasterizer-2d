@@ -4,9 +4,17 @@
 #include "rasterizer/math/color.h"
 
 namespace rasterizer {
+    class Canvas;
+
     class Rasterizer {
     public:
-        Rasterizer(int width, int height);
+        explicit Rasterizer(Canvas& canvas);
+        
+        void DrawPoint(int x, int y, const Color& color);
         void Clear(const Color& color);
+
+    
+    private:
+        Canvas& canvas;
     };
 }

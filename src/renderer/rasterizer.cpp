@@ -6,7 +6,7 @@ namespace rasterizer {
     void Rasterizer::Clear(const Color& color) {
         int width = canvas.GetWidth();
         int height = canvas.GetHeight();
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
                 canvas.SetPixel(x, y, color);    
             }

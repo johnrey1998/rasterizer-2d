@@ -7,8 +7,11 @@ namespace rasterizer {
         return (p.x - a.x) * (b.y - a.y) - (p.y - a.y) * (b.x - a.x);
     }
 
-
-    void DrawTriangle(Rasterizer& rasterizer, const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& color) {
+    void DrawTriangle(Rasterizer& rasterizer, 
+                      const Vector2& p0, const Vector2& uv0, 
+                      const Vector2& p1, const Vector2& uv1, 
+                      const Vector2& p2, const Vector2& uv2, 
+                      const Texture& texture) {
 
         int minX = static_cast<int>(std::floor(std::min({p0.x, p1.x, p2.x})));
         int maxX = static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x})));
@@ -19,18 +22,26 @@ namespace rasterizer {
         if (std::abs(area) < 1e-5f) return;
 
         for (int y = minY; y <= maxY; ++y) {
-            for (int x = minX; x <= maxX; ++x){
+            for (int x = minX; x <= maxX; ++x) {
                 Vector2 p{static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f};
 
                 float w0 = EdgeFunction(p1, p2, p);
-                float w1 = EdgeFunction(p2,p0,p);
+                float w1 = EdgeFunction(p2, p0, p);
                 float w2 = EdgeFunction(p0, p1, p);
 
-                if(w0 >= 0.0f && w1 >= 0.0f && w2 >= 0.0f) {
-                    rasterizer.DrawPoint(x,y,color);
+                if (w0 >= 0.0f && w1 >= 0.0f && w2 >= 0.0f) {
+                    float invArea = 1.0f / area;
+                    float alpha = w0 * invArea;
+                    float beta = w1 * invArea;
+                    float gamma = w2 * invArea;
+
+                    float u = alpha * uv0.x + beta * uv1.x + gamma * uv2.x;
+                    float v = alpha * uv0.y + beta * uv1.y + gamma * uv2.y;
+
+                    Color sampledColor = texture.Sample(u, v);
+                    rasterizer.DrawPoint(x, y, sampledColor);
                 }
             }
         }
-
     }
 }

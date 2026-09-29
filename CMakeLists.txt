@@ -36,11 +36,3 @@ add_custom_command(TARGET rasterizer POST_BUILD
         $<TARGET_FILE_DIR:rasterizer>
     COMMAND_EXPAND_LISTS
 )
-
-add_executable(test_math
-    tests/test_math.cpp
-    src/math/vector2.cpp
-    src/math/vector3.cpp
-    src/math/matrix3.cpp
-    src/math/color.cpp
-)

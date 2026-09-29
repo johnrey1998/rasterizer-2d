@@ -17,14 +17,19 @@ namespace rasterizer {
         SDL_Quit();
     }
 
-    bool Window::ProcessEvents() { 
+    bool Window::ProcessEvents() {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
                 return false;
             }
+                if (event.type == SDL_EVENT_KEY_DOWN) {
+                if (event.key.key == SDLK_1) activeScene = 1;
+                if (event.key.key == SDLK_2) activeScene = 2;
+                if (event.key.key == SDLK_3) activeScene = 3;
+            }
         }
-        return true; 
+        return true;
     }
 
     void Window::Present(const Canvas& canvas) {
